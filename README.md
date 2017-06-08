@@ -40,3 +40,4 @@ For each clock described in the input, your program should report the number of 
 * Provide a Dockerfile to build a Docker Image that encapsulates your solution.
 * Provide a single command to build and test your solution on a fresh clone of the repo.
 * Provide a way for users to provide an input value.
+* Ensure the code can be easily expanded to add a new queue or alter existing queues.
