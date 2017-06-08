@@ -41,3 +41,18 @@ For each clock described in the input, your program should report the number of 
         <td>378 days</td>
     </tr>
 </table>
+
+# Build and Test
+ 
+## Requirements
+
+* Latest version of Python 2.7
+* python and pip on the command-line path.
+
+## Commands
+
+### Windows
+    run.bat
+
+### Linux
+    run.sh 
