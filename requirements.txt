@@ -1,0 +1,6 @@
+# General Requirements
+pytest
+pytest-cov
+pep8
+pep257
+pylint
