@@ -25,14 +25,14 @@ def valid_input(the_input):
     :rtype: bool
     """
     try:
-        ball_count = int(the_input)
+        count = int(the_input)
     except:
         print "ValueError: '{}' is not valid input. Integers between 27 and 127 only. 0 to exit.".format(the_input)
         return False
-    if ball_count == 0:
+    if count == 0:
         return True
-    if ball_count < 27 or 127 < ball_count:
-        print "ValueError: The number of balls ({}) to test must be between 27 and 127. 0 to exit.".format(ball_count)
+    if count < 27 or 127 < count:
+        print "ValueError: The number of balls ({}) to test must be between 27 and 127. 0 to exit.".format(count)
         return False
     return True
 
