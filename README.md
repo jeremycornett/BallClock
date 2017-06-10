@@ -60,5 +60,5 @@ For each clock described in the input, your program should report the number of 
 ## Docker Build and Run Commands
 
     docker build -t ballclock .
-    // Replace the ## with a number or numbers between 27 to 127.
-    docker run ballclock python ball_clock.py ##
+    docker run ballclock
+    // Enter any number of numbers between 27 to 127 (0 to exit).
