@@ -1,0 +1,2 @@
+Given a standard ball clock that can show time from 1:00 to 12:59, how many days can the clock run without repeating the ordering of the balls?
+If you could tell the date from the ordering, how long could the clock run and keep track of the date?
