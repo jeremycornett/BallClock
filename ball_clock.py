@@ -5,8 +5,10 @@ Date:        06/07/2017
 
 
 class BallQueue:
+    """Create the ball queue and the default behavior of such a ball queue."""
+
     def __init__(self, max, placeholders, queue_full_first=None, queue_full_remain=None):
-        """The 
+        """Initialize the ball queue with the given information.
         :param maximum: The maximum number of balls the queue can hold.
         :type maximum: int
         :param placeholders: The total number of balls that have to go in placeholders for this queue.
@@ -63,7 +65,7 @@ class BallClock:
     Okay, so these ball queues, they fill up, and then empty the last added ball into the next queue, and then dumps
     all of the remainder balls out into the original queue again.
     The question is, if we identify each ball uniquely, remember the start order, how many inputs into the
-    second queue will it take for the overall order of the balls to repeat? Round down the nearest day. We don't 
+    second queue will it take for the overall order of the balls to repeat? Round down the nearest day. We don't
     even care what time the ball-clock can show. We just need to know when the order is repeated the first time.
 
     Queue Hold
@@ -78,7 +80,7 @@ class BallClock:
         Placeholders: 0
         Empty Event: LIFO 1 into Queue Hour, LIFO 11 into Queue Hold.
     Queue OneMin
-        Max: 4 
+        Max: 4
         Placeholders: 0
         Empty Event: LIFO 1 into Queue FiveMin, LIFO 4 into Queue Hold.
 
@@ -110,14 +112,15 @@ class BallClock:
         :return: None
         """
         # The placeholder balls don't count as part of the original input number.
-        self.initial_order = range(1, count+1)
+        self.initial_order = range(1, count + 1)
         self.queue_hold.balls = list(self.initial_order)
         self.queue_hour.add(0)
 
     def run(self):
         """Start the ball clock to see how long it can keep track of days based upon the ball ordering.
         :return: The number of days since the order was repeated.
-        :rtype: int"""
+        :rtype: int
+        """
         while True:
             self.count_minutes += 1
             a_ball = self.queue_hold.pop_fifo()
@@ -130,14 +133,15 @@ class BallClock:
                 break
             if self.debug and self.debug_start <= self.count_minutes <= self.debug_end:
                 print "TIME: {}:{}{}".format(len(self.queue_hour.balls),
-                                             len(self.queue_five_min.balls)*5/10,
-                                             len(self.queue_minutes.balls) + len(self.queue_five_min.balls)%2 * 5)
+                                             len(self.queue_five_min.balls) * 5 / 10,
+                                             len(self.queue_minutes.balls) + len(self.queue_five_min.balls) % 2 * 5)
                 print
         return self.count_minutes / 1440
 
     def get_order(self):
         """Get the current order.
-        :return: A list representing the current order of all the balls."""
+        :return: A list representing the current order of all the balls.
+        """
         list_current_order = []
         list_current_order.extend(self.queue_hold.get_order())
         list_current_order.extend(self.queue_minutes.get_order())
@@ -163,16 +167,16 @@ def main(balls):
     the_clock.load(balls)
 
     # Debug values
-    the_clock.debug = False
+    # the_clock.debug = True
     # Five Minute Queue Change 1:00 - 1:10
-    #the_clock.debug_start = 1
-    #the_clock.debug_end = 12
+    # the_clock.debug_start = 1
+    # the_clock.debug_end = 12
     # Hour Queue Change 1:59 - 2:01
-    #the_clock.debug_start = 59
-    #the_clock.debug_end = 61
+    # the_clock.debug_start = 59
+    # the_clock.debug_end = 61
     # Day Queue Change 12:59 - 1:00
-    #the_clock.debug_start = 1430
-    #the_clock.debug_end = 1442
+    # the_clock.debug_start = 1430
+    # the_clock.debug_end = 1442
 
     elapsed_days = the_clock.run()
     print "{} days".format(elapsed_days)
