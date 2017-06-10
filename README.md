@@ -9,6 +9,19 @@
 * Provide a way for users to provide an input value.
 * Ensure the code can be easily expanded to add a new queue or alter existing queues.
 
+# Build and Test
+ 
+## Requirements
+
+* Windows Operating System
+* Install latest version of Python 2.7
+* Install Docker for Windows.
+* python and pip on the command-line path.
+
+## Command
+
+    run.bat
+
 ## Background
 
 The ball clock is a simple device which keeps track of the passing minutes by moving ball-bearings through a series of rails and queues. Each minute, a rotating arm removes a ball bearing from the queue at the bottom, raises it to the top of the clock and deposits it on a track leading to indicators displaying minutes, five-minutes and hours. These indicators display the time between 1:00 and 12:59, but without 'a.m.' or 'p.m.' indicators. Thus 2 balls in the minute indicator, 6 balls in the five-minute indicator and 5 balls in the hour indicator displays the time 5:32.
@@ -42,13 +55,3 @@ For each clock described in the input, your program should report the number of 
     </tr>
 </table>
 
-# Build and Test
- 
-## Requirements
-
-* Latest version of Python 2.7
-* python and pip on the command-line path.
-
-## Windows Command
-
-    run.bat
