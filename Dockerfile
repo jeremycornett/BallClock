@@ -10,6 +10,3 @@ COPY ballclock/run.py /app/
 
 # Install any needed packages specified in requirements.txt
 RUN pip install theclock-1.0.0.tar.gz
-
-# Run ball_clock.py when the container launches
-CMD ["python", "run.py"]
