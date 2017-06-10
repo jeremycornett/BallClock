@@ -11,10 +11,13 @@ def main(balls):
     """The main entry point for this script.
     :param balls: The number of balls in the ball clock machine.
     :type balls: int
-    :return: None
+    :return: The number of days that the clock represents unique time before a ball position is repeated.
+    :rtype: int
     """
+    elapsed_days = 0
     print "I'm a ball machine with {} balls and I have no idea how many days I can keep " \
           "track of time, yet.".format(balls)
+    return elapsed_days
 
 
 def valid_input(the_input):
