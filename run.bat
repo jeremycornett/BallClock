@@ -7,4 +7,4 @@ python setup.py test --addopts="--cov-report term -v --cov=./theclock"
 python setup.py sdist --formats=gztar
 cd ..
 docker build -t ballclock .
-docker run ballclock
+docker run -a stdin -a stdout -i -t ballclock python run.py
