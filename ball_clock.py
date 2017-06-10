@@ -3,6 +3,7 @@ Author:      Jeremy Cornett
 Date:        06/07/2017
 """
 
+import pytest
 
 class BallQueue:
     """Create the ball queue and the default behavior of such a ball queue."""
@@ -156,15 +157,25 @@ class BallClock:
         return list_current_order
 
 
-def main(balls):
+def main(input):
     """The main entry point for this script.
     :param balls: The number of balls in the ball clock machine.
     :type balls: int
     :return: The number of days that the clock represents unique time before a ball position is repeated.
     :rtype: int
     """
+
+    try:
+        count = int(input)
+    except:
+        raise ValueError ("'{}' is not valid input. Integers between 27 and 127 only. 0 to exit.".format(input))
+    if count == 0:
+        return 0
+    if count < 27 or 127 < count:
+        raise ValueError ("The number of balls ({}) to test must be between 27 and 127. 0 to exit.".format(count))
+
     the_clock = BallClock()
-    the_clock.load(balls)
+    the_clock.load(count)
 
     # Debug values
     # the_clock.debug = True
@@ -183,42 +194,36 @@ def main(balls):
     return elapsed_days
 
 
-def valid_input(the_input):
-    """Validate that the ball count is a known valid number.
-    :param the_input: Hopefully he number of balls in the ball clock machine.
-    :type the_input: str
-    :return: If the input was valid (True) or not (False).
-    :rtype: bool
-    """
-    try:
-        count = int(the_input)
-    except:
-        print "ValueError: '{}' is not valid input. Integers between 27 and 127 only. 0 to exit.".format(the_input)
-        return False
-    if count == 0:
-        return True
-    if count < 27 or 127 < count:
-        print "ValueError: The number of balls ({}) to test must be between 27 and 127. 0 to exit.".format(count)
-        return False
-    return True
+def test_input_2():
+    """Ensure the program won't take an under range count for the balls."""
+    with pytest.raises(ValueError):
+        main(2)
 
-
-def test_example_1():
+def test_input_30():
     """The first example values given in the readme."""
     assert main(30) == 15
 
 
-def test_example_2():
+def test_input_45():
     """The second example values given in the readme."""
     assert main(45) == 378
+
+
+def test_input_200():
+    """Ensure the program won't take an under range count for the balls."""
+    with pytest.raises(ValueError):
+        main(200)
+
+
+def test_input_foobar():
+    """Ensure the program won't take an under range count for the balls."""
+    with pytest.raises(ValueError):
+        main("foobar")
 
 
 if __name__ == '__main__':
     while True:
         user_input = raw_input()
-        if not valid_input(user_input):
-            continue
-        ball_count = int(user_input)
-        if ball_count == 0:
+        result = main(user_input)
+        if result == 0:
             break
-        main(ball_count)
