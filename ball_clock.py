@@ -30,10 +30,12 @@ class BallQueue:
         self.balls.append(the_ball)
         if len(self.balls) > self.maximum:
             if self.queue_first is not None:
-                self.queue_first.add(self.pop_lifo())
+                first_ball = self.pop_lifo()
             if self.queue_remainder is not None:
                 while len(self.balls) != self.placeholder_total:
                     self.queue_remainder.add(self.pop_lifo())
+            if self.queue_first is not None:
+                self.queue_first.add(first_ball)
 
     def pop_fifo(self):
         """Return the next ball - FIFO.
@@ -91,12 +93,15 @@ class BallClock:
 
     def __init__(self):
         """Keep track of all initial information available about the ball clock."""
+        self.debug = False
+        self.debug_start = 1
+        self.debug_end = 10
         self.queue_hold = BallQueue(127, 0)
-        self.queue_hour = BallQueue(12, 1, queue_full_remain=self.queue_hold)
+        self.queue_hour = BallQueue(12, 1, queue_full_first=self.queue_hold, queue_full_remain=self.queue_hold)
         self.queue_five_min = BallQueue(11, 0, queue_full_first=self.queue_hour, queue_full_remain=self.queue_hold)
         self.queue_minutes = BallQueue(4, 0, queue_full_first=self.queue_five_min, queue_full_remain=self.queue_hold)
         self.initial_order = []
-        self.count_seconds = 0
+        self.count_minutes = 0
 
     def load(self, count):
         """Load the specified number of balls into the ball clock's queues and placeholders. Store the initial order.
@@ -105,7 +110,7 @@ class BallClock:
         :return: None
         """
         self.initial_order = range(1, count)
-        self.queue_hold.balls = self.initial_order
+        self.queue_hold.balls = list(self.initial_order)
         self.queue_hour.add(0)
 
     def run(self):
@@ -113,12 +118,20 @@ class BallClock:
         :return: The number of days since the order was repeated.
         :rtype: int"""
         while True:
-            self.count_seconds += 1
+            self.count_minutes += 1
             a_ball = self.queue_hold.pop_fifo()
             self.queue_minutes.add(a_ball)
+            if self.debug and self.debug_start <= self.count_minutes <= self.debug_end:
+                print "COUN: {}".format(self.count_minutes)
             if self.initial_order == self.get_order():
+                print self.count_minutes
                 break
-        return self.count_seconds/86400
+            if self.debug and self.debug_start <= self.count_minutes <= self.debug_end:
+                print "TIME: {}:{}{}".format(len(self.queue_hour.balls),
+                                             len(self.queue_five_min.balls)*5/10,
+                                             len(self.queue_minutes.balls) + len(self.queue_five_min.balls)%2 * 5)
+                print
+        return self.count_minutes / 1440
 
     def get_order(self):
         """Get the current order.
@@ -128,6 +141,12 @@ class BallClock:
         list_current_order.extend(self.queue_minutes.get_order())
         list_current_order.extend(self.queue_five_min.get_order())
         list_current_order.extend(self.queue_hour.get_order())
+        if self.debug and self.debug_start <= self.count_minutes <= self.debug_end:
+            print "HOLD: {}".format(self.queue_hold.get_order())
+            print " MIN: {}".format(self.queue_minutes.get_order())
+            print "FMIN: {}".format(self.queue_five_min.get_order())
+            print "HOUR: {}".format(self.queue_hour.get_order())
+            print "PHRS: {}".format(self.queue_hour.balls)
         return list_current_order
 
 
@@ -140,6 +159,19 @@ def main(balls):
     """
     the_clock = BallClock()
     the_clock.load(balls)
+
+    # Debug values
+    the_clock.debug = True
+    # Five Minute Queue Change 1:00 - 1:10
+    #the_clock.debug_start = 1
+    #the_clock.debug_end = 12
+    # Hour Queue Change 1:59 - 2:01
+    #the_clock.debug_start = 59
+    #the_clock.debug_end = 61
+    # Day Queue Change 12:59 - 1:00
+    the_clock.debug_start = 1430
+    the_clock.debug_end = 1442
+
     elapsed_days = the_clock.run()
     print "{} days".format(elapsed_days)
     return elapsed_days
