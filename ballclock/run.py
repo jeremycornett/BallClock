@@ -1,0 +1,3 @@
+import theclock
+
+theclock.run()

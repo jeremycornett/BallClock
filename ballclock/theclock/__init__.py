@@ -6,7 +6,7 @@ Date:        06/07/2017
 import BallClock
 
 
-def main(input):
+def a_clock(input):
     """The main entry point for this script.
     :param input: The number of balls in the ball clock machine.
     :type input: str
@@ -43,9 +43,9 @@ def main(input):
     return elapsed_days
 
 
-if __name__ == '__main__':
+def run():
     while True:
         user_input = raw_input()
-        result = main(user_input)
+        result = a_clock(user_input)
         if result == 0:
             break

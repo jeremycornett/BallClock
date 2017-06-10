@@ -4,11 +4,12 @@ FROM python:2.7-slim
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
-ADD . /app
+# Copy the needed contents into the container at /app
+COPY ballclock/dist/theclock-1.0.0.tar.gz /app/
+COPY ballclock/run.py /app/
 
 # Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install theclock-1.0.0.tar.gz
 
 # Run ball_clock.py when the container launches
-CMD ["python", "ball_clock.py"]
+CMD ["python", "run.py"]
