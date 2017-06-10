@@ -14,7 +14,7 @@ def main(balls):
     :return: None
     """
     validate_input(balls)
-    
+
     print "I'm a ball machine with {} balls and I have no idea how many days I can keep " \
           "track of time, yet.".format(balls)
 
@@ -43,7 +43,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Given a number of balls, how many days can the ball clock keep '
                                                  'track of time?')
     parser.add_argument('balls', metavar='N', type=int, nargs='*',
-                        help='The number of balls in the ball clock. You can enter multiple numbers.')
+                        help='The number of balls in the ball clock (between 27 and 127). '
+                             'You can enter multiple numbers.')
     args = parser.parse_args()
     if args.balls is None or len(args.balls) == 0:
         main(-1)
