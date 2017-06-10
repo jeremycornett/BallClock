@@ -158,6 +158,20 @@ class BallClock:
         return list_current_order
 
 
+def test_unit_ball_clock_load():
+    """Verify that a load of balls actually puts them in the hold queue."""
+    my_clock = BallClock()
+    my_clock.load(45)
+    assert my_clock.queue_hold.balls == range(1, 46) and my_clock.queue_hour.balls == [0]
+
+
+def test_unit_ball_clock_get_order():
+    """Ensure that the order returned by a load of balls is accurate."""
+    my_clock = BallClock()
+    my_clock.load(45)
+    assert my_clock.get_order() == range(1, 45+1)
+
+
 def main(input):
     """The main entry point for this script.
     :param balls: The number of balls in the ball clock machine.
@@ -195,29 +209,29 @@ def main(input):
     return elapsed_days
 
 
-def test_input_2():
+def test_integration_input_2():
     """Ensure the program won't take an under range count for the balls."""
     with pytest.raises(ValueError):
         main(2)
 
 
-def test_input_30():
+def test_integration_input_30():
     """The first example values given in the readme."""
     assert main(30) == 15
 
 
-def test_input_45():
+def test_integration_input_45():
     """The second example values given in the readme."""
     assert main(45) == 378
 
 
-def test_input_200():
+def test_integration_input_200():
     """Ensure the program won't take an under range count for the balls."""
     with pytest.raises(ValueError):
         main(200)
 
 
-def test_input_foobar():
+def test_integration_input_foobar():
     """Ensure the program won't take an under range count for the balls."""
     with pytest.raises(ValueError):
         main("foobar")
