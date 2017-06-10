@@ -3,9 +3,6 @@ Author:      Jeremy Cornett
 Date:        06/07/2017
 """
 
-import argparse
-import sys
-
 
 def main(balls):
     """The main entry point for this script.
