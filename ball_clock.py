@@ -109,7 +109,8 @@ class BallClock:
         :type count: int
         :return: None
         """
-        self.initial_order = range(1, count)
+        # The placeholder balls don't count as part of the original input number.
+        self.initial_order = range(1, count+1)
         self.queue_hold.balls = list(self.initial_order)
         self.queue_hour.add(0)
 
@@ -124,7 +125,8 @@ class BallClock:
             if self.debug and self.debug_start <= self.count_minutes <= self.debug_end:
                 print "COUN: {}".format(self.count_minutes)
             if self.initial_order == self.get_order():
-                print self.count_minutes
+                if self.debug:
+                    print self.count_minutes
                 break
             if self.debug and self.debug_start <= self.count_minutes <= self.debug_end:
                 print "TIME: {}:{}{}".format(len(self.queue_hour.balls),
@@ -161,7 +163,7 @@ def main(balls):
     the_clock.load(balls)
 
     # Debug values
-    the_clock.debug = True
+    the_clock.debug = False
     # Five Minute Queue Change 1:00 - 1:10
     #the_clock.debug_start = 1
     #the_clock.debug_end = 12
@@ -169,8 +171,8 @@ def main(balls):
     #the_clock.debug_start = 59
     #the_clock.debug_end = 61
     # Day Queue Change 12:59 - 1:00
-    the_clock.debug_start = 1430
-    the_clock.debug_end = 1442
+    #the_clock.debug_start = 1430
+    #the_clock.debug_end = 1442
 
     elapsed_days = the_clock.run()
     print "{} days".format(elapsed_days)
