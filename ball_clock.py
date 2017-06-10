@@ -5,6 +5,7 @@ Date:        06/07/2017
 
 import pytest
 
+
 class BallQueue:
     """Create the ball queue and the default behavior of such a ball queue."""
 
@@ -168,11 +169,11 @@ def main(input):
     try:
         count = int(input)
     except:
-        raise ValueError ("'{}' is not valid input. Integers between 27 and 127 only. 0 to exit.".format(input))
+        raise ValueError("'{}' is not valid input. Integers between 27 and 127 only. 0 to exit.".format(input))
     if count == 0:
         return 0
     if count < 27 or 127 < count:
-        raise ValueError ("The number of balls ({}) to test must be between 27 and 127. 0 to exit.".format(count))
+        raise ValueError("The number of balls ({}) to test must be between 27 and 127. 0 to exit.".format(count))
 
     the_clock = BallClock()
     the_clock.load(count)
@@ -198,6 +199,7 @@ def test_input_2():
     """Ensure the program won't take an under range count for the balls."""
     with pytest.raises(ValueError):
         main(2)
+
 
 def test_input_30():
     """The first example values given in the readme."""
