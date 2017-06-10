@@ -9,16 +9,16 @@
 * Provide a way for users to provide an input value.
 * Ensure the code can be easily expanded to add a new queue or alter existing queues.
 
-# Build and Test
+## Build and Test
  
-## Requirements
+### Requirements
 
 * Windows Operating System
 * Install latest version of Python 2.7
 * Install Docker for Windows.
 * python and pip on the command-line path.
 
-## Command
+### Command
 
     run.bat
 
