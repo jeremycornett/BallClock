@@ -4,6 +4,133 @@ Date:        06/07/2017
 """
 
 
+class BallQueue:
+    def __init__(self, max, placeholders, queue_full_first=None, queue_full_remain=None):
+        """The 
+        :param maximum: The maximum number of balls the queue can hold.
+        :type maximum: int
+        :param placeholders: The total number of balls that have to go in placeholders for this queue.
+        :type placeholders: int
+        :param queue_full_first: The queue which gets a single ball LIFO from this queue.
+        :type queue_full_first: BallQueue
+        :param queue_full_remain: The queue which gets the remainder balls LIFO from this queue.
+        :type queue_full_remain: BallQueue
+        """
+        self.balls = []
+        self.maximum = max
+        self.placeholder_total = placeholders
+        self.queue_first = queue_full_first
+        self.queue_remainder = queue_full_remain
+
+    def add(self, the_ball):
+        """Given this ball, adjust the queue and any subsequent queues.
+        :param the_ball: The ball to add to the queue.
+        :type the_ball: int
+        """
+        self.balls.append(the_ball)
+        if len(self.balls) > self.maximum:
+            if self.queue_first is not None:
+                self.queue_first.add(self.pop_lifo())
+            if self.queue_remainder is not None:
+                while len(self.balls) != self.placeholder_total:
+                    self.queue_remainder.add(self.pop_lifo())
+
+    def pop_fifo(self):
+        """Return the next ball - FIFO.
+        :return: The next ball.
+        """
+        if len(self.balls) <= self.placeholder_total:
+            raise Exception("Queue is out of balls.")
+        return self.balls.pop(self.placeholder_total)
+
+    def pop_lifo(self):
+        """Return the last ball - LIFO
+        :return: The last ball
+        """
+        if len(self.balls) <= self.placeholder_total:
+            raise Exception("Queue is out of balls.")
+        return self.balls.pop()
+
+    def get_order(self):
+        """Return the order of balls in this queue."""
+        return self.balls[self.placeholder_total:]
+
+
+class BallClock:
+    """
+    Okay, so these ball queues, they fill up, and then empty the last added ball into the next queue, and then dumps
+    all of the remainder balls out into the original queue again.
+    The question is, if we identify each ball uniquely, remember the start order, how many inputs into the
+    second queue will it take for the overall order of the balls to repeat? Round down the nearest day. We don't 
+    even care what time the ball-clock can show. We just need to know when the order is repeated the first time.
+
+    Queue Hold
+        Max: None
+        Placeholders: 0
+    Queue Hour
+        Max: 12
+        Placeholders: 1
+        Empty Event: LIFO 12 into Queue Hold.
+    Queue FiveMin
+        Max: 11
+        Placeholders: 0
+        Empty Event: LIFO 1 into Queue Hour, LIFO 11 into Queue Hold.
+    Queue OneMin
+        Max: 4 
+        Placeholders: 0
+        Empty Event: LIFO 1 into Queue FiveMin, LIFO 4 into Queue Hold.
+
+    Ball Clock INITIAL STATE
+        Fill all placeholders in each queue. Remaining balls go in Queue Hold.
+        Order: This initial order is the testing order.
+
+    Ball Clock CHECK STATE
+        Increment Event: FIFO 1 into Queue Min.
+        Order: All non-placeholder balls in Queues Hold, OneMin, FiveMin, and Hour placed front to back.
+    """
+
+    def __init__(self):
+        """Keep track of all initial information available about the ball clock."""
+        self.queue_hold = BallQueue(127, 0)
+        self.queue_hour = BallQueue(12, 1, queue_full_remain=self.queue_hold)
+        self.queue_five_min = BallQueue(11, 0, queue_full_first=self.queue_hour, queue_full_remain=self.queue_hold)
+        self.queue_minutes = BallQueue(4, 0, queue_full_first=self.queue_five_min, queue_full_remain=self.queue_hold)
+        self.initial_order = []
+        self.count_seconds = 0
+
+    def load(self, count):
+        """Load the specified number of balls into the ball clock's queues and placeholders. Store the initial order.
+        :param count: The number of balls to load.
+        :type count: int
+        :return: None
+        """
+        self.initial_order = range(1, count)
+        self.queue_hold.balls = self.initial_order
+        self.queue_hour.add(0)
+
+    def run(self):
+        """Start the ball clock to see how long it can keep track of days based upon the ball ordering.
+        :return: The number of days since the order was repeated.
+        :rtype: int"""
+        while True:
+            self.count_seconds += 1
+            a_ball = self.queue_hold.pop_fifo()
+            self.queue_minutes.add(a_ball)
+            if self.initial_order == self.get_order():
+                break
+        return self.count_seconds/86400
+
+    def get_order(self):
+        """Get the current order.
+        :return: A list representing the current order of all the balls."""
+        list_current_order = []
+        list_current_order.extend(self.queue_hold.get_order())
+        list_current_order.extend(self.queue_minutes.get_order())
+        list_current_order.extend(self.queue_five_min.get_order())
+        list_current_order.extend(self.queue_hour.get_order())
+        return list_current_order
+
+
 def main(balls):
     """The main entry point for this script.
     :param balls: The number of balls in the ball clock machine.
@@ -11,42 +138,10 @@ def main(balls):
     :return: The number of days that the clock represents unique time before a ball position is repeated.
     :rtype: int
     """
-    elapsed_days = 0
-    print "I'm a ball machine with {} balls and I have no idea how many days I can keep " \
-          "track of time, yet.".format(balls)
-
-    """
-    Okay, so these ball queues, they fill up, and then empty the last added ball into the next queue, and then dumps
-    all of the remainder balls out into the original queue again.
-    The question is, if we identify each ball uniquely, remember the start order, how many inputs into the
-    second queue will it take for the overall order of the balls to repeat? Round down the nearest day. We don't 
-    even care what time the ball-clock can show. We just need to know when the order is repeated the first time.
-    
-    Queue Hold
-        Max: None
-        Placeholders: 0
-        Load Event: FIFO 1 into Queue Min.
-    Queue OneMin
-        Max: 4 
-        Placeholders: 0
-        Empty Event: LIFO 1 into Queue FiveMin, LIFO 4 into Queue Hold.
-    Queue FiveMin
-        Max: 11
-        Placeholders: 0
-        Empty Event: LIFO 1 into Queue Hour, LIFO 11 into Queue Hold.
-    Queue Hour
-        Max: 12
-        Placeholders: 1
-        Empty Event: LIFO 12 into Queue Hold.
-    
-    INITIAL STATE
-        Fill all placeholders in each queue. Remaining balls go in Queue Hold.
-        Order: This initial order is the testing order.
-        
-    CHECK STATE
-        Order: All non-placeholder balls in Queues Hold, OneMin, FiveMin, and Hour placed front to back.
-    """
-
+    the_clock = BallClock()
+    the_clock.load(balls)
+    elapsed_days = the_clock.run()
+    print "{} days".format(elapsed_days)
     return elapsed_days
 
 
