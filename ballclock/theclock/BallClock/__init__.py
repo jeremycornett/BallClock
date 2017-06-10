@@ -1,7 +1,12 @@
-import Queue
+"""
+Author:      Jeremy Cornett
+Date:        06/07/2017
+"""
+
+import theclock.BallClock.Queue
 
 
-class BallClock:
+class BallClock(object):
     """
     Okay, so these ball queues, they fill up, and then empty the last added ball into the next queue, and then dumps
     all of the remainder balls out into the original queue again.
@@ -39,10 +44,13 @@ class BallClock:
         self.debug = False
         self.debug_start = 1
         self.debug_end = 10
-        self.queue_hold = Queue.Queue(127, 0)
-        self.queue_hour = Queue.Queue(12, 1, queue_full_first=self.queue_hold, queue_full_remain=self.queue_hold)
-        self.queue_five_min = Queue.Queue(11, 0, queue_full_first=self.queue_hour, queue_full_remain=self.queue_hold)
-        self.queue_minutes = Queue.Queue(4, 0, queue_full_first=self.queue_five_min, queue_full_remain=self.queue_hold)
+        self.queue_hold = theclock.BallClock.Queue.Queue(127, 0)
+        self.queue_hour = theclock.BallClock.Queue.Queue(12, 1, queue_full_first=self.queue_hold,
+                                                         queue_full_remain=self.queue_hold)
+        self.queue_five_min = theclock.BallClock.Queue.Queue(11, 0, queue_full_first=self.queue_hour,
+                                                             queue_full_remain=self.queue_hold)
+        self.queue_minutes = theclock.BallClock.Queue.Queue(4, 0, queue_full_first=self.queue_five_min,
+                                                            queue_full_remain=self.queue_hold)
         self.initial_order = []
         self.count_minutes = 0
 

@@ -129,5 +129,3 @@ def test_unit_ball_queue_add_five_pop_mix_all():
     pop_out.append(min_queue.pop_lifo())
     pop_out.append(min_queue.pop_fifo())
     assert pop_out == [2183, 32, 4929, 32932, 11]
-
-

@@ -1,10 +1,16 @@
-class Queue:
+"""
+Author:      Jeremy Cornett
+Date:        06/07/2017
+"""
+
+
+class Queue(object):
     """Create the ball queue and the default behavior of such a ball queue."""
 
-    def __init__(self, max, placeholders, queue_full_first=None, queue_full_remain=None):
+    def __init__(self, max_balls, placeholders, queue_full_first=None, queue_full_remain=None):
         """Initialize the ball queue with the given information.
-        :param maximum: The maximum number of balls the queue can hold.
-        :type maximum: int
+        :param max_balls: The maximum number of balls the queue can hold.
+        :type max_balls: int
         :param placeholders: The total number of balls that have to go in placeholders for this queue.
         :type placeholders: int
         :param queue_full_first: The queue which gets a single ball LIFO from this queue.
@@ -13,7 +19,7 @@ class Queue:
         :type queue_full_remain: Queue
         """
         self.balls = []
-        self.maximum = max
+        self.maximum = max_balls
         self.placeholder_total = placeholders
         self.queue_first = queue_full_first
         self.queue_remainder = queue_full_remain
@@ -52,5 +58,3 @@ class Queue:
     def get_order(self):
         """Return the order of balls in this queue."""
         return self.balls[self.placeholder_total:]
-
-

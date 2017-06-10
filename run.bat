@@ -1,3 +1,4 @@
+cls
 cd ballclock
 pip install --upgrade -r requirements.txt
 pep8 .\

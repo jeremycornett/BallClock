@@ -3,27 +3,27 @@ Author:      Jeremy Cornett
 Date:        06/07/2017
 """
 
-import BallClock
+import theclock.BallClock
 
 
-def a_clock(input):
+def a_clock(user_input):
     """The main entry point for this script.
-    :param input: The number of balls in the ball clock machine.
-    :type input: str
+    :param user_input: The number of balls in the ball clock machine.
+    :type user_input: str
     :return: The number of days that the clock represents unique time before a ball position is repeated.
     :rtype: int
     """
 
     try:
-        count = int(input)
+        count = int(user_input)
     except:
         raise ValueError("'{}' is not valid input. Integers between 27 and 127 only. 0 to exit.".format(input))
     if count == 0:
         return 0
-    if count < 27 or 127 < count:
+    if count < 27 or count > 127:
         raise ValueError("The number of balls ({}) to test must be between 27 and 127. 0 to exit.".format(count))
 
-    the_clock = BallClock.BallClock()
+    the_clock = theclock.BallClock.BallClock()
     the_clock.load(count)
 
     # Debug values
@@ -44,6 +44,7 @@ def a_clock(input):
 
 
 def run():
+    """Run the clock interactively."""
     while True:
         user_input = raw_input()
         result = a_clock(user_input)

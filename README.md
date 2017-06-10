@@ -44,21 +44,11 @@ For each clock described in the input, your program should report the number of 
 
 # Build and Test
  
-## Local Requirements
+## Requirements
 
 * Latest version of Python 2.7
 * python and pip on the command-line path.
 
-## Local Commands
+## Windows Command
 
-### Windows
     run.bat
-
-### Linux
-    run.sh
-
-## Docker Build and Run Commands
-
-    docker build -t ballclock .
-    docker run ballclock
-    // Enter any number of numbers between 27 to 127 (0 to exit).

@@ -1,6 +1,7 @@
 import pytest
 import theclock
 
+
 def test_integration_input_2():
     """Ensure the program won't take an under range count for the balls."""
     with pytest.raises(ValueError):
@@ -27,4 +28,3 @@ def test_integration_input_foobar():
     """Ensure the program won't take an under range count for the balls."""
     with pytest.raises(ValueError):
         theclock.a_clock("foobar")
-
