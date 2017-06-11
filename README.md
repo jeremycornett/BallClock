@@ -13,10 +13,8 @@
  
 ### Requirements
 
-* Windows Operating System
-* Install latest version of Python 2.7
+* Windows 10 Operating System
 * Install Docker for Windows.
-* python and pip on the command-line path.
 
 ### Command
 
